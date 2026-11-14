@@ -12,7 +12,7 @@ interface AIPowerCenterProps {
 }
 
 const AIPowerCenter: React.FC<AIPowerCenterProps> = ({ onClose }) => {
-  const [apiKey, setApiKey] = useState(() => sessionStorage.getItem('custom_gemini_key') || '');
+  const [apiKey, setApiKey] = useState('');
   const [models, setModels] = useState<Model[]>(() => {
     try {
       const savedModels = localStorage.getItem('gemini_models_list');
@@ -85,9 +85,7 @@ const AIPowerCenter: React.FC<AIPowerCenterProps> = ({ onClose }) => {
     return () => clearTimeout(timer);
   }, [apiKey]);
 
-  useEffect(() => {
-    sessionStorage.setItem('custom_gemini_key', apiKey);
-  }, [apiKey]);
+
 
   useEffect(() => {
     localStorage.setItem('custom_gemini_model', selectedModel);

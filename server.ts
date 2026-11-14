@@ -4,8 +4,41 @@ import { readFileSync } from "fs";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI, Type } from "@google/genai";
 import dotenv from "dotenv";
+import { initializeApp as initAdmin, cert, getApps } from 'firebase-admin/app';
+import { getAuth as getAdminAuth } from 'firebase-admin/auth';
+import configFile from './firebase-applet-config.json';
 
 dotenv.config();
+
+if (!getApps().length) {
+  try {
+    if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+      initAdmin({
+        credential: cert(JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT))
+      });
+    } else {
+      initAdmin({
+        projectId: configFile.projectId
+      });
+    }
+  } catch (e) {
+    console.warn("Firebase Admin init notice:", e);
+  }
+}
+
+const optionalAuthenticate = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    const token = authHeader.split('Bearer ')[1];
+    try {
+      const decodedToken = await getAdminAuth().verifyIdToken(token);
+      (req as any).user = decodedToken;
+    } catch (e) {
+      // Token invalid or expired
+    }
+  }
+  next();
+};
 
 // Gemini Error Handler Helper
 const handleGeminiError = (error: any, res: express.Response) => {
@@ -34,8 +67,9 @@ const isProd = process.env.NODE_ENV === "production";
 
 async function startServer() {
   const app = express();
-  app.use(express.json({ limit: '50mb' }));
-  app.use(express.urlencoded({ limit: '50mb', extended: true }));
+  app.use(express.json({ limit: '10mb' }));
+  app.use(express.urlencoded({ limit: '10mb', extended: true }));
+  app.use('/api/', optionalAuthenticate);
 
   // Health Check
   app.get("/api/health", (req, res) => {
