@@ -61,7 +61,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(false);
     }, (error: any) => {
       console.warn("Error fetching user profile (likely quota exceeded):", error?.message);
-      setProfile(null);
       setLoading(false);
     });
 

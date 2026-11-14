@@ -4,7 +4,7 @@ import { X, Send, ShieldCheck, History, BookOpen, Loader2, CheckCircle, AlertCir
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { collection, query, where, getDocs, addDoc, serverTimestamp, limit } from 'firebase/firestore';
-import { db, auth, handleFirestoreError, OperationType } from '../lib/firebase';
+import { db, handleFirestoreError, OperationType } from '../lib/firebase';
 import { useAuth } from './AuthProvider';
 
 interface Message {
@@ -114,13 +114,9 @@ const ResponseView: React.FC<ResponseViewProps> = ({ onClose }) => {
       const customApiKey = localStorage.getItem('custom_gemini_key');
       const customModel = localStorage.getItem('custom_gemini_model');
 
-      const token = auth.currentUser ? await auth.currentUser.getIdToken() : undefined;
       const response = await fetch('/api/chat', {
         method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           message: userMessage,
           customApiKey: customApiKey,

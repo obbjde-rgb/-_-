@@ -1,23 +1,18 @@
-/// <reference types="vite/client" />
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
-import configFile from '../../firebase-applet-config.json';
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || configFile.apiKey,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || configFile.authDomain,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || configFile.projectId,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || configFile.storageBucket,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || configFile.messagingSenderId,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || configFile.appId,
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || configFile.measurementId,
+  projectId: "tokyo-canto-cxfb9",
+  appId: "1:312887359748:web:046f42e349005fa058f851",
+  apiKey: "AIzaSyA6JNqdTVraf4mUEMru1nKlYz3bf7BgSL4",
+  authDomain: "tokyo-canto-cxfb9.firebaseapp.com",
+  storageBucket: "tokyo-canto-cxfb9.firebasestorage.app",
+  messagingSenderId: "312887359748"
 };
 
-const databaseId = import.meta.env.VITE_FIRESTORE_DATABASE_ID || configFile.firestoreDatabaseId;
-
 const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app, databaseId);
+export const db = getFirestore(app, "ai-studio-0c8042e7-b201-4a9c-870a-f6b5301aaa1f");
 export const auth = getAuth(app);
 
 export enum OperationType {

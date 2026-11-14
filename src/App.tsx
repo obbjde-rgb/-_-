@@ -32,7 +32,6 @@ import ScholarReviewView from './components/ScholarReviewView';
 import AIPowerCenter from './components/AIPowerCenter';
 import Roadmap from './components/Roadmap';
 import ThemeToggle from './components/ThemeToggle';
-import PWAInstallButton from './components/PWAInstallButton';
 
 import { useAuth } from './components/AuthProvider';
 import AuthModal from './components/AuthModal';
@@ -135,7 +134,6 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-3">
-            <PWAInstallButton />
             <ThemeToggle />
             {loading ? (
               <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800/50 animate-pulse"></div>
